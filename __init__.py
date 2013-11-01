@@ -6,3 +6,4 @@ Author: Paweł Szydło
 from keywords_calais import KeywordFinderCalais
 from keywords_nltk import KeywordFinderNLTK
 from keywords_python import KeywordFinderPython
+from keywords_base import KeywordFinderException

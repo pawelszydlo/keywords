@@ -28,3 +28,8 @@ class KeywordFinderBase:
 
     def get_keywords(self, text, language=None):
         raise NotImplementedError("This needs to be implemented")
+
+
+class KeywordFinderException(Exception):
+    """ Base class for exceptions in this module. """
+    pass

@@ -1,8 +1,9 @@
 import re
+import logging
 from os import listdir
 from os.path import isfile, join, isdir
 
-from keywords_base import KeywordFinderBase
+from keywords_base import KeywordFinderBase, KeywordFinderException
 
 
 class KeywordFinderPython(KeywordFinderBase):
@@ -12,7 +13,7 @@ class KeywordFinderPython(KeywordFinderBase):
     def __init__(self, stopwords_dir):
         """ You should pass full path to directory containing stopword files """
         if not isdir(stopwords_dir):
-            raise EnvironmentError(66, "Stopwords dir does not exist.")
+            raise KeywordFinderException("Stopwords directory does not exist.")
         else:
             self.stopwords_dir = stopwords_dir
 
@@ -27,7 +28,8 @@ class KeywordFinderPython(KeywordFinderBase):
         try:
             files = listdir(self.stopwords_dir)
         except OSError:
-            return []
+            raise KeywordFinderException("Can't list stopwords directory.")
+
         return [f for f in files if isfile(join(self.stopwords_dir, f)) and f[0]!='.']
 
     def _get_stopwords(self, language):
@@ -35,10 +37,12 @@ class KeywordFinderPython(KeywordFinderBase):
         try:
             data = open(join(self.stopwords_dir, language),"r").read()
         except IOError:
+            logging.error("Can't read stopwords file for language: %s" % language)
             return set()
         try:
             return set(data.splitlines())
         except AttributeError:
+            logging.error("Invalid stopwords file for language: %s" % language)
             return set()
 
     def detect_language(self, text):
@@ -58,6 +62,8 @@ class KeywordFinderPython(KeywordFinderBase):
         """ Get the list of keywords for passed text. """
         if language is not None:
             if language not in self._get_available_languages():
+                logging.warn("User passed an unsupported language: %s. Falling back to: %s." % \
+                                                                    (language, self.default_lang))
                 language = self.default_lang
         else:
             language = self.detect_language(text)

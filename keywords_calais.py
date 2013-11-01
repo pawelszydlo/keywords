@@ -1,5 +1,6 @@
 import urllib
 import urllib2
+import logging
 try:
     import simplejson as json
 except ImportError:
@@ -37,12 +38,14 @@ class KeywordFinderCalais:
         headers = {"Content-type":"application/x-www-form-urlencoded",
                      "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8) AppleWebKit/536.5\
                                     (KHTML, like Gecko) Chrome/19.0.1084.56 Safari/536.5"}
+
+        raw_data = ""
         try:
             request = urllib2.Request("http://api.opencalais.com/enlighten/rest/", params, headers)
             response = urllib2.urlopen(request, timeout=1)
             raw_data = response.read()
         except urllib2.URLError:
-            raw_data = ""
+            logging.error("Calais server did not respond in time.")
 
         return raw_data
 
@@ -70,13 +73,13 @@ class KeywordFinderCalais:
     def get_keywords(self, text):
         """ Get the list of keywords for passed text. """
         raw_data = self._get_calais_response(text, self.API_KEY)
-
+        data = None
         try:
             data = json.loads(raw_data)
             data = self._simplify_response(data)
             data = data.get("socialTag", None)
         except ValueError:
-            data = None
+            logging.error("JSON could not parse the Calais response.")
 
         if data:
             return [tag["name"] for tag in data if tag["importance"] > 1]

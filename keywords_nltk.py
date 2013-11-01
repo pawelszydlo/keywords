@@ -1,3 +1,4 @@
+import logging
 import nltk
 from nltk.corpus import stopwords
 from nltk.collocations import BigramCollocationFinder
@@ -28,6 +29,8 @@ class KeywordFinderNLTK(KeywordFinderBase):
         """ Get the list of keywords for passed text. """
         if language is not None:
             if language not in self._get_available_languages():
+                logging.warn("User passed an unsupported language: %s. Falling back to: %s." % \
+                                                                    (language, self.default_lang))
                 language = self.default_lang
         else:
             language = self.detect_language(text)

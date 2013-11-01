@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+""" Simple tool for testing the keyword finders from command line. """
 import sys
 
 from keywords_calais import KeywordFinderCalais
