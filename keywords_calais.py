@@ -1,10 +1,13 @@
 import urllib
 import urllib2
 import logging
+from socket import timeout
 try:
     import simplejson as json
 except ImportError:
     import json
+
+from keywords_base import KeywordFinderException
 
 
 class KeywordFinderCalais:
@@ -34,6 +37,9 @@ class KeywordFinderCalais:
         config = params_template % \
                  (" ".join('c:%s="%s"' % (k,v) for (k,v) in processing_directives.items()))
 
+        # should have used python 3
+        text = unicode(text).encode("utf-8")
+
         params = urllib.urlencode({'licenseID':key, 'content':text, 'paramsXML':config})
         headers = {"Content-type":"application/x-www-form-urlencoded",
                      "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8) AppleWebKit/536.5\
@@ -42,10 +48,12 @@ class KeywordFinderCalais:
         raw_data = ""
         try:
             request = urllib2.Request("http://api.opencalais.com/enlighten/rest/", params, headers)
-            response = urllib2.urlopen(request, timeout=1)
+            response = urllib2.urlopen(request, timeout=10)
             raw_data = response.read()
+        except timeout:
+            raise KeywordFinderException("Calais server did not respond in time.")
         except urllib2.URLError:
-            logging.error("Calais server did not respond in time.")
+            raise KeywordFinderException("Error while talking to Calais server.")
 
         return raw_data
 
@@ -77,6 +85,8 @@ class KeywordFinderCalais:
             text: string to extract keywords from
         Returns:
             List of keywords.
+        Raises:
+            KeywordFinderException on Calais communication error
 
         """
         raw_data = self._get_calais_response(text, self.api_key)

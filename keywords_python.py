@@ -20,7 +20,7 @@ class KeywordFinderPython(KeywordFinderBase):
     def _split_text(self, text):
         """ Split text into words also cleaning all non-alphanumeric characters and short words """
         expression = re.compile(ur'[\W_]+', re.UNICODE)
-        return [word.lower() for word in expression.sub(u' ', text.decode('utf-8')).split()\
+        return [word.lower() for word in expression.sub(u' ', text).split()\
                 if len(word)>2]
 
     def _get_available_languages(self):

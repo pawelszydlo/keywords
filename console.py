@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """ Simple tool for testing the keyword finders from command line. """
 import sys
+import codecs
 
 from keywords_calais import KeywordFinderCalais
 from keywords_nltk import KeywordFinderNLTK
@@ -21,7 +22,7 @@ if __name__ == "__main__":
 
     if len(sys.argv)>2:
         try:
-            text = open(sys.argv[2],"r").read()
+            text = codecs.open(sys.argv[2], encoding='utf-8', mode="r").read()
         except IOError:
             print "Can't read %s." % (sys.argv[2])
             sys.exit(2)
@@ -35,4 +36,5 @@ if __name__ == "__main__":
     else:
         keyword_finder = KeywordFinderPython("/Users/widget/nltk_data/corpora/stopwords")
 
-    print ", ".join(keyword_finder.get_keywords(text))
+    keywords = keyword_finder.get_keywords(unicode(text))
+    print u", ".join(keywords)
