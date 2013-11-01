@@ -10,11 +10,22 @@ class KeywordFinderNLTK(KeywordFinderBase):
     """ Class for finding text keywords using the NLTK framework """
     min_bigram_freq = 2         # bi-gram finding threshold
 
+    def __init__(self):
+        pass
+
     def _get_available_languages(self):
+        """ Get available languages by listing nltk's stopwords files """
         return stopwords.fileids()
 
     def detect_language(self, text):
-        """ Detect language of text by using nltk's stopwords for comparison. """
+        """ Detect language of text by using nltk's stopwords for comparison.
+
+        Args:
+            text: string to perform language detection on
+        Returns:
+            String containing the name of detected language.
+
+        """
         language_ratios = {}
         words = set([word.lower() for word in nltk.word_tokenize(text) if len(word)>2])
 
@@ -26,7 +37,15 @@ class KeywordFinderNLTK(KeywordFinderBase):
         return max(language_ratios, key=language_ratios.get)
 
     def get_keywords(self, text, language=None):
-        """ Get the list of keywords for passed text. """
+        """ Get the list of keywords for passed text.
+
+        Args:
+            text: string to extract keywords from
+            language: optional language string
+        Return:
+            List of keywords.
+
+        """
         if language is not None:
             if language not in self._get_available_languages():
                 logging.warn("User passed an unsupported language: %s. Falling back to: %s." % \

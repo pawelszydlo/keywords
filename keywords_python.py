@@ -46,7 +46,16 @@ class KeywordFinderPython(KeywordFinderBase):
             return set()
 
     def detect_language(self, text):
-        """ Detect language of text by using nltk's stopwords for comparison. """
+        """ Detect language of text by using stopwords files for comparison.
+
+        Args:
+            text: string to perform language detection on
+        Returns:
+            String containing the name of detected language.
+        Raises:
+            KeywordFinderException: when stopword files directory is invalid
+
+        """
         language_ratios = {}
         words = set(self._split_text(text))
 
@@ -59,7 +68,17 @@ class KeywordFinderPython(KeywordFinderBase):
             else self.default_lang
 
     def get_keywords(self, text, language=None):
-        """ Get the list of keywords for passed text. """
+        """ Get the list of keywords for passed text.
+
+        Args:
+            text: string to extract keywords from
+            language: optional language string
+        Returns:
+            List of keywords.
+        Raises:
+            KeywordFinderException: when stopword files directory is invalid
+
+        """
         if language is not None:
             if language not in self._get_available_languages():
                 logging.warn("User passed an unsupported language: %s. Falling back to: %s." % \

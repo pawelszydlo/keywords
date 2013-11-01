@@ -11,6 +11,11 @@ class KeywordFinderBase:
         """ Select top keywords based on calculated frequency threshold. This implementation
         is obviously flawed. More research and more advanced math is needed here.
 
+        Args:
+            word_freq_dict: dictionary with items in the form word->frequency
+        Returns:
+            List containing top words.
+
         """
         if len(word_freq_dict)==0:
             return []

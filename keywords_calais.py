@@ -9,11 +9,11 @@ except ImportError:
 
 class KeywordFinderCalais:
     """ Class for finding text keywords using the Calais API """
-    API_KEY = ""
+    api_key = ""
 
     def __init__(self, api_key):
-        """ Pass your Calais API key. """
-        self.API_KEY = api_key
+        """ Pass your Calais API key here. """
+        self.api_key = api_key
 
     def _get_calais_response(self, text, key):
         """ Get json response from Calais web API. """
@@ -71,8 +71,15 @@ class KeywordFinderCalais:
         return result
 
     def get_keywords(self, text):
-        """ Get the list of keywords for passed text. """
-        raw_data = self._get_calais_response(text, self.API_KEY)
+        """ Get the list of keywords for passed text.
+
+        Args:
+            text: string to extract keywords from
+        Returns:
+            List of keywords.
+
+        """
+        raw_data = self._get_calais_response(text, self.api_key)
         data = None
         try:
             data = json.loads(raw_data)
