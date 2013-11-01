@@ -1,14 +1,20 @@
 import re
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, isdir
 
 from keywords_base import KeywordFinderBase
 
 
 class KeywordFinderPython(KeywordFinderBase):
     """ Class for finding text keywords using pure python """
-    nltk_stopwords_dir = "/Users/widget/nltk_data/corpora/stopwords"
-                            # if available - use stopwords from NLTK library
+    stopwords_dir = ""
+
+    def __init__(self, stopwords_dir):
+        """ You should pass full path to directory containing stopword files """
+        if not isdir(stopwords_dir):
+            raise EnvironmentError(66, "Stopwords dir does not exist.")
+        else:
+            self.stopwords_dir = stopwords_dir
 
     def _split_text(self, text):
         """ Split text into words also cleaning all non-alphanumeric characters and short words """
@@ -19,15 +25,15 @@ class KeywordFinderPython(KeywordFinderBase):
     def _get_available_languages(self):
         """ Get's available languages by listing stopword files."""
         try:
-            files = listdir(self.nltk_stopwords_dir)
+            files = listdir(self.stopwords_dir)
         except OSError:
             return []
-        return [f for f in files if isfile(join(self.nltk_stopwords_dir, f)) and f[0]!='.']
+        return [f for f in files if isfile(join(self.stopwords_dir, f)) and f[0]!='.']
 
     def _get_stopwords(self, language):
         """ Loads stopwords from file. """
         try:
-            data = open(join(self.nltk_stopwords_dir, language),"r").read()
+            data = open(join(self.stopwords_dir, language),"r").read()
         except IOError:
             return set()
         try:

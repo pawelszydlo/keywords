@@ -3,7 +3,11 @@ from calais import Calais
 
 class KeywordFinderCalais:
     """ Class for finding text keywords using the Calais API """
-    API_KEY = "seffdjarup7phnn8z45f6mt6"
+    API_KEY = ""
+
+    def __init__(self, api_key):
+        """ Pass your Calais API key. """
+        self.API_KEY = api_key
 
     def get_keywords(self, text):
         """ Get the list of keywords for passed text. """

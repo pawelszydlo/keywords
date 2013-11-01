@@ -18,6 +18,9 @@ class KeywordFinderBase:
         max_freq = top_words[0][1] if len(top_words)>0 else 0
         avg_freq = sum(word_freq_dict.values())/len(word_freq_dict)
 
+        if max_freq == avg_freq:   # hack, need to return something...
+            return [word[0] for word in top_words[:3]]
+
         # don't let the threshold fall below avarage
         threshold = max(avg_freq, max_freq*self.tag_threshold)
 
