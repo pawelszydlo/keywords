@@ -12,6 +12,8 @@ class KeywordFinderBase:
         is obviously flawed. More research and more advanced math is needed here.
 
         """
+        if len(word_freq_dict)==0:
+            return []
         top_words = sorted(word_freq_dict.items(), key=lambda x: x[1], reverse=True)
         max_freq = top_words[0][1] if len(top_words)>0 else 0
         avg_freq = sum(word_freq_dict.values())/len(word_freq_dict)
