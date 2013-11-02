@@ -12,6 +12,7 @@ Metody znajdywania słów kluczowych
 * W oparciu o bilbiotekę NLTK - usunięcie stop words, analiza częstotliwości występowania słów, wyszukanie bi-gramów.
 * Prosta - usunięcie stop words, analiza częstotliowści wystepowania słów. Brak zewnętrznych zależności (poza plikami stop words).
 * Calais - zapytanie o tagi sieciowego API serwisu OpenCalais (http://www.opencalais.com/). Brak obsługi języka polskiego.
+
 Metody NLTK i prosta wykrywają język tekstu celem wczytania odpowiednich stop words.
 
 Czytelność kodu
