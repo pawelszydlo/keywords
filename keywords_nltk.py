@@ -46,6 +46,7 @@ class KeywordFinderNLTK(KeywordFinderBase):
             List of keywords.
 
         """
+        text = unicode(text)
         if language is not None:
             if language not in self._get_available_languages():
                 logging.warn("User passed an unsupported language: %s. Falling back to: %s." % \
@@ -56,6 +57,7 @@ class KeywordFinderNLTK(KeywordFinderBase):
 
         # load stopwords (words common in given language)
         stop_words = stopwords.words(language)
+        stop_words = [word.decode("utf-8") for word in stop_words]  # fix to a bug in nltk
 
         # split text into words
         words = [word.lower() for word in nltk.wordpunct_tokenize(text) if len(word)>2 and\

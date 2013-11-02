@@ -1,5 +1,6 @@
 import re
 import logging
+import codecs
 from os import listdir
 from os.path import isfile, join, isdir
 
@@ -35,7 +36,8 @@ class KeywordFinderPython(KeywordFinderBase):
     def _get_stopwords(self, language):
         """ Loads stopwords from file. """
         try:
-            data = open(join(self.stopwords_dir, language),"r").read()
+            data = codecs.open(join(self.stopwords_dir, language), encoding='utf-8', mode="r")\
+                                                                                            .read()
         except IOError:
             logging.error("Can't read stopwords file for language: %s" % language)
             return set()
@@ -79,6 +81,7 @@ class KeywordFinderPython(KeywordFinderBase):
             KeywordFinderException: when stopword files directory is invalid
 
         """
+        text = unicode(text)
         if language is not None:
             if language not in self._get_available_languages():
                 logging.warn("User passed an unsupported language: %s. Falling back to: %s." % \
