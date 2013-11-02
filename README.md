@@ -20,7 +20,7 @@ Modułu można uzywać z poziomu konsoli przy pomocy skryptu *console.py*.
 
 Metody znajdywania słów kluczowych
 ----------------------------------
-* W oparciu o bilbiotekę NLTK - usunięcie stop words, wyszukanie bi-gramów, analiza częstotliwości występowania słów, .
+* W oparciu o bilbiotekę NLTK: usunięcie stop words, wyszukanie bi-gramów, normalizacja (rdzenie, wielkość liter), analiza częstotliwości występowania słów, denormalizacja (rdzenie).
 * Prosta - usunięcie stop words, analiza częstotliowści wystepowania słów. Brak zewnętrznych zależności (poza plikami stop words).
 * Calais - zapytanie o tagi sieciowego API serwisu OpenCalais (http://www.opencalais.com/). Brak obsługi języka polskiego.
 
