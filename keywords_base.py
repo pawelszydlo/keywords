@@ -4,15 +4,15 @@ class KeywordFinderBase:
         get_keywords
 
     """
-    tag_threshold = 0.20        # ignore tags with ranking lower than max*this
     default_lang = "english"    # fallback language if user supplies wrong one
 
-    def _filter_keywords(self, word_freq_dict):
+    def _filter_keywords(self, word_freq_dict, tag_threshold=0.20):
         """ Select top keywords based on calculated frequency threshold. This implementation
         is obviously flawed. More research and more advanced math is needed here.
 
         Args:
             word_freq_dict: dictionary with items in the form word->frequency
+            tag_threshold: optional threshold (multiplier of max frequency) for keywords to include
         Returns:
             List containing top words.
 
@@ -27,7 +27,7 @@ class KeywordFinderBase:
             return [word[0] for word in top_words[:3]]
 
         # don't let the threshold fall below avarage
-        threshold = max(avg_freq, max_freq*self.tag_threshold)
+        threshold = max(avg_freq, max_freq*tag_threshold)
 
         return [word[0] for word in top_words if word[1] > threshold]
 

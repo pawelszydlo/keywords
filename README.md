@@ -7,9 +7,20 @@ Wymagania
 * Python 2.7 (ze względu na dict comprehensions)
 * nltk > 2.0
 
+Przykład użycia
+---------------
+```python
+from keywords import KeywordFinderNLTK
+
+finder = KeywordFinderNLTK()
+finder.get_keywords("The sea is the connected body of salty water that covers over 70 percent of the Earth's surface.")
+```
+
+Modułu można uzywać z poziomu konsoli przy pomocy skryptu *console.py*.
+
 Metody znajdywania słów kluczowych
 ----------------------------------
-* W oparciu o bilbiotekę NLTK - usunięcie stop words, analiza częstotliwości występowania słów, wyszukanie bi-gramów.
+* W oparciu o bilbiotekę NLTK - usunięcie stop words, wyszukanie bi-gramów, analiza częstotliwości występowania słów, .
 * Prosta - usunięcie stop words, analiza częstotliowści wystepowania słów. Brak zewnętrznych zależności (poza plikami stop words).
 * Calais - zapytanie o tagi sieciowego API serwisu OpenCalais (http://www.opencalais.com/). Brak obsługi języka polskiego.
 
@@ -33,6 +44,7 @@ Słowa kluczowe
 --------------
 Samo zagadnienie wyszukiwania słów kluczowych jest złożone. Wyniki możnaby znacznie poprawić przez:
 * Obszerne tablice stopwords
-* Generatory rdzeni słów
+* Generatory rdzeni słów przystosowane do języka tekstu
+* Słowniki do zamiany rdzeni na słowa
 * Lepsze klasyfikatory niż tylko częstość wystepowania (analiza leksykalna)
 * Stworzenie indeksu wszystkich tekstów danego projektu i wyszukiwanie słów wyjątkowych w tym kontekście

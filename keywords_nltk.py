@@ -1,7 +1,9 @@
 import logging
+import os
 import nltk
 from nltk.corpus import stopwords
 from nltk.collocations import BigramCollocationFinder
+from nltk.stem.porter import PorterStemmer
 
 from keywords_base import KeywordFinderBase
 
@@ -11,6 +13,8 @@ class KeywordFinderNLTK(KeywordFinderBase):
     min_bigram_freq = 2         # bi-gram finding threshold
 
     def __init__(self):
+        # add this files directory to data search path
+        nltk.data.path.extend([os.path.dirname(os.path.realpath(__file__))])
         pass
 
     def _get_available_languages(self):
@@ -60,7 +64,7 @@ class KeywordFinderNLTK(KeywordFinderBase):
         stop_words = [word.decode("utf-8") for word in stop_words]  # fix to a bug in nltk
 
         # split text into words
-        words = [word.lower() for word in nltk.wordpunct_tokenize(text) if len(word)>2 and\
+        words = [word for word in nltk.wordpunct_tokenize(text) if len(word)>2 and\
                                                                 word.lower() not in stop_words]
 
         # find bi-grams (two word collocations)
@@ -69,9 +73,23 @@ class KeywordFinderNLTK(KeywordFinderBase):
         finder.apply_freq_filter(self.min_bigram_freq)
         bigrams = finder.nbest(bigram_measures.pmi, 5)
 
-        # find most frequent words, excluding words already in bi-grams
-        expanded_bigrams = [word for bigram in bigrams for word in bigram]
-        top_words = {word:freq for word, freq in nltk.FreqDist(words).items()\
-                     if word not in expanded_bigrams}
+        # this whole part below could be shortened by a few loops, but readability would suffer
+        # convert words to stems, saving original words for stems in a dictionary
+        stemmer = PorterStemmer()
+        original_words = {}
+        stemmed_words = []
+        for word in words:
+            stem = stemmer.stem(word).lower()
+            original_words[stem] = word  # TODO: handle most popular word for stem
+            stemmed_words.append(stem)
 
-        return self._filter_keywords(top_words) + [" ".join(bigram) for bigram in bigrams]
+        # find most frequent words, substitute stems by saved original words
+        top_words = {original_words[word]:freq for word, freq in\
+                                                            nltk.FreqDist(stemmed_words).items()}
+
+        # exclude words already in bigrams
+        expanded_bigrams = [word for bigram in bigrams for word in bigram]
+        top_words = {word: freq for word, freq in top_words.items()\
+                                                                if word not in expanded_bigrams}
+
+        return self._filter_keywords(top_words, 0.4) + [" ".join(bigram) for bigram in bigrams]

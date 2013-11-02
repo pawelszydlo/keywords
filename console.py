@@ -34,7 +34,7 @@ if __name__ == "__main__":
     elif method == "nltk":                      # ^ this should not be in a public repo...
         keyword_finder = KeywordFinderNLTK()
     else:
-        keyword_finder = KeywordFinderPython("/Users/widget/nltk_data/corpora/stopwords")
+        keyword_finder = KeywordFinderPython()
 
     keywords = keyword_finder.get_keywords(unicode(text))
     print u", ".join(keywords)

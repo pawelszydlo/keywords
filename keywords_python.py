@@ -1,4 +1,5 @@
 import re
+import os
 import logging
 import codecs
 from os import listdir
@@ -11,8 +12,14 @@ class KeywordFinderPython(KeywordFinderBase):
     """ Class for finding text keywords using pure python """
     stopwords_dir = ""
 
-    def __init__(self, stopwords_dir):
-        """ You should pass full path to directory containing stopword files """
+    def __init__(self, stopwords_dir=None):
+        """ You can pass full path to directory containing stopword files.
+        If you don't, "stopwords" directory near this file will be assumed.
+
+        """
+        if stopwords_dir is None:
+            stopwords_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                                                            "corpora/stopwords")
         if not isdir(stopwords_dir):
             raise KeywordFinderException("Stopwords directory does not exist.")
         else:
