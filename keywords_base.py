@@ -1,6 +1,7 @@
 class KeywordFinderBase:
     """ Base class for finding text keywords. Not really needed in this project.
-    Methods you should overwrite:
+
+    Methods you must overwrite:
         get_keywords
 
     """

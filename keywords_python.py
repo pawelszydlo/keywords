@@ -13,8 +13,11 @@ class KeywordFinderPython(KeywordFinderBase):
     stopwords_dir = ""
 
     def __init__(self, stopwords_dir=None):
-        """ You can pass full path to directory containing stopword files.
-        If you don't, "stopwords" directory near this file will be assumed.
+        """ Init the finder.
+
+        Args:
+            stopwords_dir: optional string containing full path to directory with stopword files.
+                           If not passed, "stopwords" directory near this file will be assumed.
 
         """
         if stopwords_dir is None:
@@ -32,7 +35,7 @@ class KeywordFinderPython(KeywordFinderBase):
                 if len(word)>2]
 
     def _get_available_languages(self):
-        """ Get's available languages by listing stopword files."""
+        """ Get available languages by listing stopword files."""
         try:
             files = listdir(self.stopwords_dir)
         except OSError:
@@ -41,7 +44,7 @@ class KeywordFinderPython(KeywordFinderBase):
         return [f for f in files if isfile(join(self.stopwords_dir, f)) and f[0]!='.']
 
     def _get_stopwords(self, language):
-        """ Loads stopwords from file. """
+        """ Load stopwords from file. """
         try:
             data = codecs.open(join(self.stopwords_dir, language), encoding='utf-8', mode="r")\
                                                                                             .read()

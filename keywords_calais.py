@@ -15,7 +15,12 @@ class KeywordFinderCalais:
     api_key = ""
 
     def __init__(self, api_key):
-        """ Pass your Calais API key here. """
+        """ Initialize the finder
+
+        Args:
+            api_key: string containing your Calais API key
+
+        """
         self.api_key = api_key
 
     def _get_calais_response(self, text, key):
