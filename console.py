@@ -30,8 +30,8 @@ if __name__ == "__main__":
         text = raw_input("Paste your text now:\n\n")
 
     if method == "calais":
-        keyword_finder = KeywordFinderCalais("seffdjarup7phnn8z45f6mt6")
-    elif method == "nltk":                      # ^ this should not be in a public repo...
+        keyword_finder = KeywordFinderCalais("xxx")
+    elif method == "nltk":
         keyword_finder = KeywordFinderNLTK()
     else:
         keyword_finder = KeywordFinderPython()
